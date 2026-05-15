@@ -1,0 +1,49 @@
+# ========================
+# ENVIRONMENT & SECRETS
+# ========================
+.env
+.env.local
+.env.production
+.env.development
+
+# ========================
+# NODE MODULES
+# ========================
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# ========================
+# UPLOADED FILES
+# ========================
+server/uploads/
+
+# ========================
+# BUILD OUTPUT
+# ========================
+client/build/
+client/dist/
+
+# ========================
+# LOGS
+# ========================
+logs/
+*.log
+npm-debug.log*
+
+# ========================
+# OS FILES
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# EDITOR
+# ========================
+.vscode/
+.idea/
+
+# ========================
+# REDIS & BULL TEMP
+# ========================
+dump.rdb
