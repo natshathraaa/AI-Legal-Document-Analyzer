@@ -1,0 +1,20 @@
+{
+  "short_name": "LexAI",
+  "name": "LexAI",
+  "icons": [
+    {
+      "src": "lexai-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "lexai-icon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0f0f23",
+  "background_color": "#0f0f23"
+}
