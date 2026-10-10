@@ -38,7 +38,7 @@ async function ensureModel() {
     const resolvedName = process.env.GEMINI_MODEL || modelName
     _resolvedModelName = resolvedName
     console.log('Using Gemini model:', resolvedName)
-    model = genAI.getGenerativeModel({ model: gemini-1.5-flash })
+    model = genAI.getGenerativeModel({ model: resolvedName })
   } catch (e) {
     const fallbackName = process.env.GEMINI_MODEL || 'gemini-1.5'
     console.warn('Failed to create model with', process.env.GEMINI_MODEL || modelName, 'falling back to', fallbackName)
