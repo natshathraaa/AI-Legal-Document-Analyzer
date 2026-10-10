@@ -10,7 +10,6 @@ export default function RiskMeter({ score = 0 }) {
   const [display, setDisplay] = useState(0)
   const normalized = Math.max(0, Math.min(10, Number(score) || 0))
   const circumference = 2 * Math.PI * 50 // r=50 => 314
-  const dash = (normalized / 10) * circumference
   const color = getColor(normalized)
 
   useEffect(() => {

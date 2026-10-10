@@ -6,6 +6,13 @@ import RiskMeter from '../components/RiskMeter'
 import RiskBadge from '../components/RiskBadge'
 import ClauseCard from '../components/ClauseCard'
 
+const PROCESSING_STEPS = [
+  'Extracting clauses...',
+  'Detecting risk patterns...',
+  'Comparing to industry standards...',
+  'Generating negotiation suggestions...'
+]
+
 export default function Analysis() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -20,27 +27,6 @@ export default function Analysis() {
   const [chatLoading, setChatLoading] = useState(false)
 
   const pollingRef = useRef(null)
-
-  const loadChatHistory = async () => {
-    try {
-      const chatResponse = await axios.get(`/api/chat/${id}`)
-      const savedMessages = chatResponse.data.flatMap(chat => [
-        { role: 'user', content: chat.question },
-        { role: 'assistant', content: chat.answer, sources: [] }
-      ])
-      setChatMessages(savedMessages)
-    } catch (err) {
-      console.log('No chat history yet')
-    }
-  }
-
-  const loadDocumentAndChats = async () => {
-    const full = await axios.get(`/api/documents/${id}`)
-    setDocument(full.data)
-    setClauses(full.data.clauses || [])
-    setLoading(false)
-    await loadChatHistory()
-  }
 
   const handleSendMessage = async () => {
     if (!chatInput.trim() || chatLoading) return
@@ -82,6 +68,24 @@ export default function Analysis() {
 
   useEffect(() => {
     let mounted = true
+
+    const loadDocumentAndChats = async () => {
+      const full = await axios.get(`/api/documents/${id}`)
+      setDocument(full.data)
+      setClauses(full.data.clauses || [])
+      setLoading(false)
+
+      try {
+        const chatResponse = await axios.get(`/api/chat/${id}`)
+        const savedMessages = chatResponse.data.flatMap(chat => [
+          { role: 'user', content: chat.question },
+          { role: 'assistant', content: chat.answer, sources: [] }
+        ])
+        setChatMessages(savedMessages)
+      } catch (err) {
+        console.log('No chat history yet')
+      }
+    }
 
     const checkStatus = async () => {
       try {
@@ -131,12 +135,10 @@ export default function Analysis() {
     }
   }, [id])
 
-  // cycling text for processing
-  const steps = ['Extracting clauses...', 'Detecting risk patterns...', 'Comparing to industry standards...', 'Generating negotiation suggestions...']
   const [stepIndex, setStepIndex] = useState(0)
   useEffect(() => {
     if (processingStatus !== 'processing') return
-    const iv = setInterval(() => setStepIndex(i => (i + 1) % steps.length), 2000)
+    const iv = setInterval(() => setStepIndex(i => (i + 1) % PROCESSING_STEPS.length), 2000)
     return () => clearInterval(iv)
   }, [processingStatus])
 
@@ -146,7 +148,7 @@ export default function Analysis() {
         <div className="text-center">
           <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
           <h2 className="text-2xl">🤖 Analyzing Your Contract...</h2>
-          <p className="mt-3 text-slate-400">{steps[stepIndex]}</p>
+          <p className="mt-3 text-slate-400">{PROCESSING_STEPS[stepIndex]}</p>
           <p className="mt-2 text-sm text-slate-500">This usually takes 30-60 seconds</p>
         </div>
       </div>
